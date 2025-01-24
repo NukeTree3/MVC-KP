@@ -1,11 +1,10 @@
 package com.nuketree3.example.mvckp.model.service;
 
-
-
 import com.nuketree3.example.mvckp.model.connections.PostgreSQLConnections;
 import com.nuketree3.example.mvckp.model.filehandler.FileRead;
 import com.nuketree3.example.mvckp.model.product.Laptop;
 import com.nuketree3.example.mvckp.model.product.PersonalComputer;
+import com.nuketree3.example.mvckp.model.product.Product;
 import com.nuketree3.example.mvckp.model.user.User;
 
 import javax.crypto.BadPaddingException;
@@ -23,13 +22,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+
+@org.springframework.stereotype.Service
 public class Service {
     private final PostgreSQLConnections connections;
     private final FileRead fileRead;
     private String keyFile;
 
     public Service(){
-        connections = new PostgreSQLConnections("jdbc:postgresql://localhost:5432/testDB", "postgres", "12345");
+        connections = new PostgreSQLConnections("jdbc:postgresql://localhost:5432/MVCDB", "postgres", "12345");
         fileRead = new FileRead();
     }
 
@@ -50,8 +51,8 @@ public class Service {
         ArrayList<PersonalComputer> pc = new ArrayList<>();
         if(resultSet != null){
             while(resultSet.next()){
-                pc.add(new PersonalComputer(resultSet.getString("pc_name"), resultSet.getString("producer"), resultSet.getString("processor_model"),
-                        Integer.getInteger(resultSet.getString("RAM")), Integer.getInteger(resultSet.getString("price"))));
+                pc.add(new PersonalComputer(resultSet.getString("pc_name"), resultSet.getString("producer"), Integer.getInteger(resultSet.getString("price")), resultSet.getString("processor_model"),
+                        Integer.getInteger(resultSet.getString("RAM"))));
             }
         }
         connections.closeConnection();
@@ -63,8 +64,8 @@ public class Service {
         ArrayList<Laptop> laptops = new ArrayList<>();
         if(resultSet != null){
             while(resultSet.next()){
-                laptops.add(new Laptop(resultSet.getString("laptop_name"), resultSet.getString("producer"), resultSet.getString("processor_model"),
-                        Integer.getInteger(resultSet.getString("RAM")), Integer.getInteger(resultSet.getString("price"))));
+                laptops.add(new Laptop(resultSet.getString("laptop_name"), resultSet.getString("producer"), Integer.getInteger(resultSet.getString("price")
+                ), resultSet.getString("processor_model"), Integer.getInteger(resultSet.getString("RAM"))));
             }
         }
         connections.closeConnection();
@@ -125,9 +126,34 @@ public class Service {
         return stringBuilder.toString();
     }
 
+    /*
+    переделать storage(добавить каждому продукту тип)
+    вытаскивать в методе пару значений: имя и тип
+    передавать это все в getProduct
+     */
+    public ArrayList<String> productIdFromStorage() throws SQLException {
+        ResultSet resultSet = getFromDB("SELECT product_id FROM storage");
+        ArrayList<String> productIds = new ArrayList<>();
+        if(resultSet!=null){
+            while(resultSet.next()){
+                productIds.add(resultSet.getString("product_id"));
+            }
+        }
+        return productIds;
+    }
+
+//    public Product getProduct(String name) throws SQLException{
+//        ResultSet resultSet = getFromDB("SELECT * FROM laptop WHERE laptop_name = '"+name+"' UNION ALL SELECT * FROM pc WHERE pc_name = '"+name+"';");
+//        if(resultSet!=null){
+//            while(resultSet.next()){
+//                return new Product();
+//            }
+//        }
+//    }
+
     private ResultSet getFromDB(String query) throws SQLException {
-        Connection connect = connections.getConnection();
-        if(connect == null){
+        Connection connect = connections.connect();
+        if(connect != null){
             Statement statement = connect.createStatement();
             ResultSet result = statement.executeQuery(query);
             connections.getAllCloseConnectionResurses(connect, statement, result);

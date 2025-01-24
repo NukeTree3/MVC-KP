@@ -1,20 +1,24 @@
 package com.nuketree3.example.mvckp.model.product;
 
-import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
-@Data
-public class Laptop {
-    private String nameLaptop;
-    private String producer;
+import java.util.HashMap;
+
+@SuperBuilder
+public class Laptop extends Product{
     private String processorModel;
     private int ram;
-    private int price;
 
-    public Laptop(String nameLaptop, String producer, String processorModel, int ram, int price ) {
-        this.nameLaptop = nameLaptop;
-        this.producer = producer;
+    public Laptop(String nameLaptop, String producer, int price, String processorModel, int ram ) {
+        super(nameLaptop, producer, price);
         this.processorModel = processorModel;
         this.ram = ram;
-        this.price = price;
+    }
+
+    public HashMap<String, String> getOtherAttributes() {
+        HashMap<String, String> otherAttributes = new HashMap<>();
+        otherAttributes.put("processorModel", processorModel);
+        otherAttributes.put("ram", String.valueOf(ram));
+        return otherAttributes;
     }
 }

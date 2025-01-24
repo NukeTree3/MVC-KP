@@ -6,11 +6,11 @@
     </title>
 </head>
 <body>
-    HELLO<hr>
-    <#list products as product>
+HELLO<hr>
+<#list products as product>
     <div>
         <a href="/product"${product}>${product}
     </div>
-    </#list>
+</#list>
 </body>
 </html>
