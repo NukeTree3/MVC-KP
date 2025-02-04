@@ -15,9 +15,9 @@ public abstract class ConnectionToDB {
     private Connection connection;
 
     public ConnectionToDB(String host, String username, String password) {
-        this.HOST = host;
-        this.USERNAME = username;
-        this.PASSWORD = password;
+        HOST = host;
+        USERNAME = username;
+        PASSWORD = password;
     }
 
     public Connection getConnection() {

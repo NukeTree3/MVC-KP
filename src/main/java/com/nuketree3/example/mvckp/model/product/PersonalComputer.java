@@ -1,24 +1,42 @@
 package com.nuketree3.example.mvckp.model.product;
 
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import java.util.HashMap;
 
-@SuperBuilder
-public class PersonalComputer extends Product{
-    private int ram;
+@EqualsAndHashCode(callSuper = true)
+@Data
+@Table(name = "pc")
+public class PersonalComputer extends Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "pc_name")
+    private String name;
+    @Column(name = "producer")
+    private String producer;
+    @Column(name = "processor_model")
     private String processorModel;
+    @Column(name = "ram")
+    private int ram;
+    @Column(name = "price")
+    private int price;
+    private String imagePath;
 
     public PersonalComputer(String namePC, String producer, int price, String processorModel, int ram ) {
-        super(namePC, producer, price);
+        this.name = namePC;
+        this.producer = producer;
+        this.price = price;
         this.processorModel = processorModel;
         this.ram = ram;
     }
 
-    public HashMap<String, String> getOtherAttributes() {
-        HashMap<String, String> otherAttributes = new HashMap<>();
-        otherAttributes.put("processorModel", processorModel);
-        otherAttributes.put("ram", String.valueOf(ram));
-        return otherAttributes;
+    @Override
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
+
 }

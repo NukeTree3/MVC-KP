@@ -6,11 +6,10 @@
     </title>
 </head>
 <body>
-HELLO<hr>
-<#list products as product>
-    <div>
-        <a href="/product"${product}>${product}
-    </div>
-</#list>
+<a href="/">HELLO<hr>
+<#--&lt;#&ndash;<img src="${product.imagePath}" alt="${product.name}" width="500" height="500">&ndash;&gt;-->
+<#--название ${product.name}-->
+<#--цена ${product.price}-->
+<#--изготовитель ${product.producer}-->
 </body>
 </html>

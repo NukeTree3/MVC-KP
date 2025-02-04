@@ -19,6 +19,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -28,10 +29,14 @@ public class Service {
     private final PostgreSQLConnections connections;
     private final FileRead fileRead;
     private String keyFile;
+//    private final ArrayList<String> tables;
 
     public Service(){
         connections = new PostgreSQLConnections("jdbc:postgresql://localhost:5432/MVCDB", "postgres", "12345");
         fileRead = new FileRead();
+//        tables = new ArrayList<>();
+//        tables.add("laptop");
+//        tables.add("pc");
     }
 
     private int updateDB(String string) throws SQLException {
@@ -73,20 +78,24 @@ public class Service {
     }
 
     public int getCountProductFromStorage(String nameOfProduct) throws SQLException {
-        ResultSet resultSet = getFromDB("SELECT count FROM storage WHERE product_id = " + nameOfProduct);
+        ResultSet resultSet = getFromDB("SELECT count FROM storage WHERE product_name = '" + nameOfProduct+"'");
         assert resultSet != null;
         return resultSet.getInt("count");
     }
 
     public boolean findLoginUser(String login) throws SQLException {
         ResultSet resultSet = getFromDB("SELECT * FROM purchaser WHERE login = '" + login + "'");
-        return resultSet != null;
+        assert resultSet != null;
+        System.out.println(resultSet.next());
+        return resultSet.next();
     }
 
     public int addPurchaser(User user) throws SQLException {
         if(!findLoginUser(user.getEmail())){
-            return updateDB("INSERT INTO purchaser (login, password, first_name, last_name, birthdate, phone_number) VALUES " + user.getEmail() +", "+
-                    user.getPassword()+", " + user.getFirstName() +", "+ user.getLastName()+", "+user.getBirthday() +", "+user.getPhone());
+            System.out.println("INSERT INTO purchaser (login, password, first_name, last_name, birthdate, phone_number) VALUES ('" + user.getEmail() +"', '"+
+                    user.getPassword()+"', '" + user.getFirstName() +"', '"+ user.getLastName()+"', '"+user.getBirthday() +"', '"+user.getPhone()+"');");
+            return updateDB("INSERT INTO purchaser (login, password, first_name, last_name, birthdate, phone_number) VALUES ('" + user.getEmail() +"', '"+
+                    user.getPassword()+"', '" + user.getFirstName() +"', '"+ user.getLastName()+"', '"+user.getBirthday() +"', '"+user.getPhone()+"');");
         }
         else return 0;
     }
@@ -126,30 +135,108 @@ public class Service {
         return stringBuilder.toString();
     }
 
-    /*
-    переделать storage(добавить каждому продукту тип)
-    вытаскивать в методе пару значений: имя и тип
-    передавать это все в getProduct
-     */
-    public ArrayList<String> productIdFromStorage() throws SQLException {
-        ResultSet resultSet = getFromDB("SELECT product_id FROM storage");
-        ArrayList<String> productIds = new ArrayList<>();
+    public User getUserFromDb(String email) throws SQLException {
+        ResultSet resultSet = getFromDB("SELECT * FROM purchaser WHERE login = '" + email + "'");
+        assert resultSet != null;
+        if(resultSet.next()){
+            return new User(resultSet.getString("first_name"),resultSet.getString("last_name"),
+                    resultSet.getString("login"),resultSet.getString("password"), LocalDate.parse(resultSet.getString("birthdate")),
+                    resultSet.getString("phone_number"));
+        }
+        return null;
+    }
+
+    public String getPathPhotoFromDB(String nameOfProduct) throws SQLException {
+        ResultSet resultSet = getFromDB("SELECT path FROM photos WHERE product_id = '" + nameOfProduct+"'");
+        if(resultSet != null){
+            resultSet.getString("path");
+        }
+        return nameOfProduct;
+    }
+    
+    public ArrayList<String> getName(ArrayList<ArrayList<String>> typeAndName){
+        ArrayList<String> name = new ArrayList<>();
+        for(ArrayList<String> f : typeAndName){
+            name.add(f.get(0));
+        }
+        return name;
+    }
+
+    public ArrayList<String> getNames() throws SQLException{
+        ArrayList<String> name = new ArrayList<>();
+        ResultSet resultSet = getFromDB("SELECT product_name FROM storage");
+        assert resultSet != null;
+        if(resultSet.next()){
+            while(resultSet.next()){
+                name.add(resultSet.getString("product_name"));
+            }
+        }
+        return name;
+    }
+
+    public String getImagePathFromDB(String nameOfProduct) throws SQLException {
+        ResultSet resultSet = getFromDB("SELECT path FROM photos WHERE product_id = '" + nameOfProduct+"'");
+        assert resultSet != null;
+        if(resultSet.next()){
+            return resultSet.getString("path");
+        }
+        return null;
+    }
+
+    public ArrayList<Product> getProductList() throws SQLException {
+        ArrayList<Product> products = new ArrayList<>();
+        for(String productName : getNames()){
+            Product product = getProduct(productName);
+            products.add(product);
+        }
+        return products;
+    }
+
+
+    public ArrayList<ArrayList<String>> productIdFromStorage() throws SQLException {
+        ResultSet resultSet = getFromDB("SELECT product_name, type FROM storage");
+        ArrayList<ArrayList<String>> productIds = new ArrayList<>();
         if(resultSet!=null){
             while(resultSet.next()){
-                productIds.add(resultSet.getString("product_id"));
+                ArrayList<String> NameAndType = new ArrayList<>();
+                NameAndType.add(resultSet.getString("product_name"));
+                NameAndType.add(resultSet.getString("type"));
+                productIds.add(NameAndType);
             }
         }
         return productIds;
     }
 
-//    public Product getProduct(String name) throws SQLException{
-//        ResultSet resultSet = getFromDB("SELECT * FROM laptop WHERE laptop_name = '"+name+"' UNION ALL SELECT * FROM pc WHERE pc_name = '"+name+"';");
-//        if(resultSet!=null){
-//            while(resultSet.next()){
-//                return new Product();
-//            }
-//        }
-//    }
+    public String getTypeFromDB(String nameOfProduct) throws SQLException {
+        ResultSet resultSet = getFromDB("SELECT type FROM storage WHERE product_name = '" + nameOfProduct+"'");
+        assert resultSet != null;
+        if(resultSet.next()) return resultSet.getString("type");
+        return null;
+    }
+
+    public Product getProduct(String name) throws SQLException{
+        String type = getTypeFromDB(name);
+        ResultSet resultSet = getFromDB("SELECT * FROM " + type + " WHERE "+type+"_name = '" + name+"'");
+        assert resultSet != null;
+        if(resultSet.next()){
+            if(type.equals("laptop")){
+                Product product = new Laptop(name, resultSet.getString("producer"),
+                        resultSet.getInt("price"),
+                        resultSet.getString("processor_model"), resultSet.getInt("ram"));
+                product.setImagePath(getImagePathFromDB(name));
+                return product;
+            }
+            if(type.equals("pc")){
+                Product product = new PersonalComputer(name, resultSet.getString("producer"),
+                        resultSet.getInt("price"),
+                        resultSet.getString("processor_model"), resultSet.getInt("ram"));
+                product.setImagePath(getImagePathFromDB(name));
+                return product;
+            }
+            else return null;
+        }
+        return null;
+    }
 
     private ResultSet getFromDB(String query) throws SQLException {
         Connection connect = connections.connect();

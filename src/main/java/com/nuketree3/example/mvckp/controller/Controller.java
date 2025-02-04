@@ -10,18 +10,31 @@ import java.sql.SQLException;
 
 @org.springframework.stereotype.Controller
 @RequiredArgsConstructor
-public class Controller {
+public class Controller{
     private final Service service;
 
     @GetMapping("/")
     public String hello(Model model) throws SQLException {
-        model.addAttribute("products", service.productIdFromStorage());
+        model.addAttribute("products", service.getProductList());
         return "hello";
     }
 
-    @GetMapping("/product/{id}")
-    public String product(Model model, @PathVariable int id) throws SQLException {
-        model.addAttribute("product", service.productIdFromStorage());
+    @GetMapping("/product/{name}")
+    public String product(Model model, @PathVariable String name) throws SQLException {
+        model.addAttribute("product", service.getProduct(name));
         return "product-information";
+    }
+
+    @GetMapping("/{name}")
+    public String imagesForProductInformation(Model model, @PathVariable String name) throws SQLException {
+        String imageURL = "/images/" + name;
+        model.addAttribute("image", imageURL);
+        return "product-information";
+    }
+    @GetMapping("/main_{name}")
+    public String imagesForMain(Model model, @PathVariable String name) throws SQLException {
+        String imageURL = "/images/" + name;
+        model.addAttribute("image", imageURL);
+        return "hello";
     }
 }
