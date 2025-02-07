@@ -7,9 +7,16 @@
 </head>
 <body>
     HELLO | <a href="/login">Войти</a><hr>
+    <div class="search_area">
+        <form action="/" method="GET">
+            <input type="text" name="query" id="search_box" value="" autocomplete="off">
+            <input type="submit" value="Поиск">
+        </form>
+        <div id="search_advice_wrapper"></div>
+    </div>
     <#list products as product>
     <div>
-        <a href="/product/${product.name}"><img src="${product.imagePath}" alt="${product.name}" width="100" height="100">${product.name}
+        <a href="/product/${product.id}">${product.name}
     </div>
     </#list>
 </body>

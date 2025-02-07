@@ -9,13 +9,9 @@ import java.util.HashMap;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Entity
 @Table(name = "pc")
 public class PersonalComputer extends Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "pc_name")
-    private String name;
     @Column(name = "producer")
     private String producer;
     @Column(name = "processor_model")
@@ -24,19 +20,29 @@ public class PersonalComputer extends Product {
     private int ram;
     @Column(name = "price")
     private int price;
-    private String imagePath;
+//    private String imagePath;
 
-    public PersonalComputer(String namePC, String producer, int price, String processorModel, int ram ) {
-        this.name = namePC;
-        this.producer = producer;
-        this.price = price;
-        this.processorModel = processorModel;
-        this.ram = ram;
-    }
+//    public PersonalComputer(String namePC, String producer, int price, String processorModel, int ram ) {
+//        super(name) = namePC;
+//        this.producer = producer;
+//        this.price = price;
+//        this.processorModel = processorModel;
+//        this.ram = ram;
+//    }
 
+    //    @Override
+//    public void setImagePath(String imagePath) {
+//        this.imagePath = imagePath;
+//    }
     @Override
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public HashMap<String, String> getAllAttribute() {
+        HashMap<String, String> attributes = new HashMap<>();
+        attributes.put("Название", getName());
+        attributes.put("Производитель", producer);
+        attributes.put("Модель процессора", processorModel);
+        attributes.put("RAM", String.valueOf(ram));
+        attributes.put("Цена", String.valueOf(price));
+        return attributes;
     }
 
 }

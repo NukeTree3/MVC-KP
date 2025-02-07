@@ -1,23 +1,24 @@
 package com.nuketree3.example.mvckp.model.user;
 
+import com.nuketree3.example.mvckp.model.product.Product;
+import com.nuketree3.example.mvckp.model.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final ProductService productService;
     private PasswordEncoder passwordEncoder;
     private UserRepository userRepository;
 
@@ -45,10 +46,12 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @GetMapping("/hello")
-    public String securityUrl() {
-        return "hello";
-    }
+//    @GetMapping("/search")
+//    @ResponseBody
+//    public List<Product> searchProducts(@RequestParam(value = "query", required = false) String query, Model model) {
+//        return productService.searchProductByName(query);
+//    }
+
 
     @GetMapping("/secured")
     public String secured(Principal principal) {

@@ -50,32 +50,32 @@ public class Service {
         connection.close();
         return resultSet;
     }
+//
+//    public ArrayList<PersonalComputer>  getPersonalComputerFromDB() throws SQLException {
+//        ResultSet resultSet = getFromDB("SELECT * FROM pc");
+//        ArrayList<PersonalComputer> pc = new ArrayList<>();
+//        if(resultSet != null){
+//            while(resultSet.next()){
+//                pc.add(new PersonalComputer(resultSet.getString("pc_name"), resultSet.getString("producer"), Integer.getInteger(resultSet.getString("price")), resultSet.getString("processor_model"),
+//                        Integer.getInteger(resultSet.getString("RAM"))));
+//            }
+//        }
+//        connections.closeConnection();
+//        return pc;
+//    }
 
-    public ArrayList<PersonalComputer>  getPersonalComputerFromDB() throws SQLException {
-        ResultSet resultSet = getFromDB("SELECT * FROM pc");
-        ArrayList<PersonalComputer> pc = new ArrayList<>();
-        if(resultSet != null){
-            while(resultSet.next()){
-                pc.add(new PersonalComputer(resultSet.getString("pc_name"), resultSet.getString("producer"), Integer.getInteger(resultSet.getString("price")), resultSet.getString("processor_model"),
-                        Integer.getInteger(resultSet.getString("RAM"))));
-            }
-        }
-        connections.closeConnection();
-        return pc;
-    }
-
-    public ArrayList<Laptop>  getLaptopsFromDB() throws SQLException {
-        ResultSet resultSet = getFromDB("SELECT * FROM laptop");
-        ArrayList<Laptop> laptops = new ArrayList<>();
-        if(resultSet != null){
-            while(resultSet.next()){
-                laptops.add(new Laptop(resultSet.getString("laptop_name"), resultSet.getString("producer"), Integer.getInteger(resultSet.getString("price")
-                ), resultSet.getString("processor_model"), Integer.getInteger(resultSet.getString("RAM"))));
-            }
-        }
-        connections.closeConnection();
-        return laptops;
-    }
+//    public ArrayList<Laptop>  getLaptopsFromDB() throws SQLException {
+//        ResultSet resultSet = getFromDB("SELECT * FROM laptop");
+//        ArrayList<Laptop> laptops = new ArrayList<>();
+//        if(resultSet != null){
+//            while(resultSet.next()){
+//                laptops.add(new Laptop(resultSet.getString("laptop_name"), resultSet.getString("producer"), Integer.getInteger(resultSet.getString("price")
+//                ), resultSet.getString("processor_model"), Integer.getInteger(resultSet.getString("RAM"))));
+//            }
+//        }
+//        connections.closeConnection();
+//        return laptops;
+//    }
 
     public int getCountProductFromStorage(String nameOfProduct) throws SQLException {
         ResultSet resultSet = getFromDB("SELECT count FROM storage WHERE product_name = '" + nameOfProduct+"'");
@@ -182,15 +182,15 @@ public class Service {
         }
         return null;
     }
-
-    public ArrayList<Product> getProductList() throws SQLException {
-        ArrayList<Product> products = new ArrayList<>();
-        for(String productName : getNames()){
-            Product product = getProduct(productName);
-            products.add(product);
-        }
-        return products;
-    }
+//
+//    public ArrayList<Product> getProductList() throws SQLException {
+//        ArrayList<Product> products = new ArrayList<>();
+//        for(String productName : getNames()){
+//            Product product = getProduct(productName);
+//            products.add(product);
+//        }
+//        return products;
+//    }
 
 
     public ArrayList<ArrayList<String>> productIdFromStorage() throws SQLException {
@@ -214,29 +214,29 @@ public class Service {
         return null;
     }
 
-    public Product getProduct(String name) throws SQLException{
-        String type = getTypeFromDB(name);
-        ResultSet resultSet = getFromDB("SELECT * FROM " + type + " WHERE "+type+"_name = '" + name+"'");
-        assert resultSet != null;
-        if(resultSet.next()){
-            if(type.equals("laptop")){
-                Product product = new Laptop(name, resultSet.getString("producer"),
-                        resultSet.getInt("price"),
-                        resultSet.getString("processor_model"), resultSet.getInt("ram"));
-                product.setImagePath(getImagePathFromDB(name));
-                return product;
-            }
-            if(type.equals("pc")){
-                Product product = new PersonalComputer(name, resultSet.getString("producer"),
-                        resultSet.getInt("price"),
-                        resultSet.getString("processor_model"), resultSet.getInt("ram"));
-                product.setImagePath(getImagePathFromDB(name));
-                return product;
-            }
-            else return null;
-        }
-        return null;
-    }
+//    public Product getProduct(String name) throws SQLException{
+//        String type = getTypeFromDB(name);
+//        ResultSet resultSet = getFromDB("SELECT * FROM " + type + " WHERE "+type+"_name = '" + name+"'");
+//        assert resultSet != null;
+//        if(resultSet.next()){
+//            if(type.equals("laptop")){
+//                Product product = new Laptop(name, resultSet.getString("producer"),
+//                        resultSet.getInt("price"),
+//                        resultSet.getString("processor_model"), resultSet.getInt("ram"));
+//                product.setImagePath(getImagePathFromDB(name));
+//                return product;
+//            }
+//            if(type.equals("pc")){
+//                Product product = new PersonalComputer(name, resultSet.getString("producer"),
+//                        resultSet.getInt("price"),
+//                        resultSet.getString("processor_model"), resultSet.getInt("ram"));
+//                product.setImagePath(getImagePathFromDB(name));
+//                return product;
+//            }
+//            else return null;
+//        }
+//        return null;
+//    }
 
     private ResultSet getFromDB(String query) throws SQLException {
         Connection connect = connections.connect();
