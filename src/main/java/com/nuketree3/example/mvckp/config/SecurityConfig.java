@@ -31,7 +31,8 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/**", "/product/**","/images/**", "/registration").permitAll()
+                        .requestMatchers("/", "/product/**","/images/**", "/registration").permitAll()
+                        .requestMatchers("/basket", "/order").fullyAuthenticated()
                         .anyRequest().authenticated()).formLogin(form -> form.loginPage("/login").permitAll())
                 .logout(LogoutConfigurer::permitAll);
         return http.build();

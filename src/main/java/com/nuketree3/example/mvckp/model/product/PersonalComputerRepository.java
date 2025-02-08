@@ -11,7 +11,9 @@ import java.util.List;
 @Repository
 public interface PersonalComputerRepository extends JpaRepository<PersonalComputer, Long> {
 
-    List<PersonalComputer> findAllByName(String name);
+
+    @Query(value = "SELECT * FROM pc WHERE lower(name) LIKE lower(concat('%', :name, '%'))", nativeQuery = true)
+    List<PersonalComputer> findByNameLike(@Param("name") String name);
 
     List<PersonalComputer> id(long id);
 

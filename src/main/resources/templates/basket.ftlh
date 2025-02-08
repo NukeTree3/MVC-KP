@@ -16,10 +16,13 @@
     <div id="search_advice_wrapper"></div>
 </div>
 <hr>
-    <#list products as product>
-    <div>
-        <a href="/product/${product.id}">${product.name}
-    </div>
-    </#list>
+<#list basket.products?keys as key>
+    <#assign value = basket.getQuantity(key)>
+    ${key.name} : ${value} : ${key.price}<hr>
+</#list>
+<#--<form action="/order" method="POST">-->
+<#--    <input type="submit" value="Заказать">-->
+    <a href="/order">Заказать</a>
+<#--</form>-->
 </body>
 </html>

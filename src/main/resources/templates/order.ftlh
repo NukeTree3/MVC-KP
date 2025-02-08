@@ -9,17 +9,13 @@
 <a href="/">HELLO</a>
 <a href="/basket"> Корзина</a>
 <div class="search_area">
-    <form action="/" method="GET">
+    <form action="/order" method="GET">
         <input type="text" name="query" id="search_box" value="" autocomplete="off">
         <input type="submit" value="Поиск">
     </form>
     <div id="search_advice_wrapper"></div>
 </div>
 <hr>
-    <#list products as product>
-    <div>
-        <a href="/product/${product.id}">${product.name}
-    </div>
-    </#list>
+${status}
 </body>
 </html>

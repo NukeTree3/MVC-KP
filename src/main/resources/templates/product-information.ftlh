@@ -43,7 +43,16 @@
     </style>
 </head>
 <body>
-<a href="/">HELLO<hr></a>
+<a href="/">HELLO</a>
+<a href="/basket"> Корзина</a>
+<div class="search_area">
+    <form action="/" method="GET">
+        <input type="text" name="query" id="search_box" value="" autocomplete="off">
+        <input type="submit" value="Поиск">
+    </form>
+    <div id="search_advice_wrapper"></div>
+</div>
+<hr>
 <#--&lt;#&ndash;<img src="${product.imagePath}" alt="${product.name}" width="500" height="500">&ndash;&gt;-->
 <#--название ${product.name}-->
 <#--цена ${product.price}-->
@@ -60,7 +69,7 @@
 <form action="/product/${product.id}" method="post"> <!-- Добавили тег form -->
     <div class="quantity-container">
         <button class="quantity-button" type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-        <input type="number" id="quantity" name="quantity" class="quantity-input" value="0" min="0" max="${count}">
+        <input type="number" id="quantity" name="quantity" class="quantity-input" value="${countProductFromBasket}" min="0" max="${count}">
         <button class="quantity-button" type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
     </div>
 

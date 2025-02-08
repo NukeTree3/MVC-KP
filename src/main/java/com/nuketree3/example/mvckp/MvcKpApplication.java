@@ -10,4 +10,13 @@ public class MvcKpApplication {
         SpringApplication.run(MvcKpApplication.class, args);
     }
 
+
+    /*
+    Реализовать поиск +
+    регистрация через почту
+    оформление заказа +
+    админов и панель администрации
+    вернуть картинки
+    ui сделать нормальный
+     */
 }

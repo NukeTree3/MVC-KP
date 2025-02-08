@@ -26,8 +26,8 @@ public class ProductService{
             products.addAll(personalComputerRepository.findAll());
         }
         else {
-            products.addAll(laptopRepository.findAllByName(query));
-            products.addAll(personalComputerRepository.findAllByName(query));
+            products.addAll(laptopRepository.findByNameLike(query));
+            products.addAll(personalComputerRepository.findByNameLike(query));
         }
         return products;
     }

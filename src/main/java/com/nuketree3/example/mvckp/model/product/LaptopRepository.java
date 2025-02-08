@@ -12,10 +12,12 @@ import java.util.List;
 @Repository
 public interface LaptopRepository extends JpaRepository<Laptop, Long> {
 
-    List<Laptop> findAllByName(String name);
+    @Query(value = "SELECT * FROM laptop WHERE lower(name) LIKE lower(concat('%', :name, '%'))", nativeQuery = true)
+    List<Laptop> findByNameLike(@Param("name") String name);
 
     List<Laptop> id(long id);
 
     @Query(value = "SELECT count FROM storage WHERE product_name = :name", nativeQuery = true)
     int countByNameInStorage(@Param("name") String name);
+
 }
