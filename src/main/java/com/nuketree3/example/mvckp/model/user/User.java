@@ -36,6 +36,7 @@ public class User{
     private LocalDate birthday;
     @Column(name = "phone_number")
     private String phone;
+
 ////    private boolean active;
 //    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
 //    private Set<Role> roles = new HashSet<>();

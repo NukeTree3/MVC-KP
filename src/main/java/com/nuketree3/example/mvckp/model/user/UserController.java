@@ -52,11 +52,23 @@ public class UserController {
 //        return productService.searchProductByName(query);
 //    }
 
-
-    @GetMapping("/secured")
-    public String secured(Principal principal) {
-        if(principal==null) return null;
-        return principal.getName();
+    @GetMapping("/activationcode/{code}")
+    public String activationcode(@PathVariable String code, Model model) {
+        boolean isActivated = userService.activateUser(code);
+        if(isActivated) {
+            model.addAttribute("message", "Activated" );
+        }
+        else {
+            model.addAttribute("message", "Error" );
+        }
+        return "login";
     }
+
+
+//    @GetMapping("/secured")
+//    public String secured(Principal principal) {
+//        if(principal==null) return null;
+//        return principal.getName();
+//    }
 
 }
