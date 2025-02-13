@@ -1,12 +1,10 @@
 package com.nuketree3.example.mvckp.model.user;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.nuketree3.example.mvckp.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
@@ -17,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
+
     private Long id;
     private String firstName;
     private String lastName;
@@ -24,8 +23,9 @@ public class UserDetailsImpl implements UserDetails {
     private String password;
     private LocalDate birthday;
     private String phone;
+    private String role;
 
-    public static UserDetails buildUserDetails(User user) {
+    public static UserDetails buildUserDetails(User user, String role) {
         return new UserDetailsImpl(
                 user.getId(),
                 user.getFirstName(),
@@ -33,14 +33,15 @@ public class UserDetailsImpl implements UserDetails {
                 user.getEmail(),
                 user.getPassword(),
                 user.getBirthday(),
-                user.getPhone()
+                user.getPhone(),
+                role
         );
     }
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority(role));
     }
 
     @Override
@@ -70,6 +71,6 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return role.equals(String.valueOf(Role.ROLE_USER)) || role.equals(String.valueOf(Role.ROLE_ADMIN));
     }
 }

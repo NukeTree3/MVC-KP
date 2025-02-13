@@ -2,12 +2,10 @@ package com.nuketree3.example.mvckp.model.product;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -39,9 +37,19 @@ public class ProductService{
     }
 
     public int getCountProductByName(String name){
+        System.out.println("name " + name);
         if (name == null) return 0;
-        if(laptopRepository.countByNameInStorage(name) != 0) return laptopRepository.countByNameInStorage(name);
-        if(personalComputerRepository.countByNameInStorage(name) != 0) return personalComputerRepository.countByNameInStorage(name);
+        System.out.println(1);
+        try {
+            if(laptopRepository.countByNameInStorage(name) != 0 && laptopRepository.countByNameInStorage(name) != null) return laptopRepository.countByNameInStorage(name);
+            System.out.println(2);
+            if(personalComputerRepository.countByNameInStorage(name) != 0 && personalComputerRepository.countByNameInStorage(name) != null) return personalComputerRepository.countByNameInStorage(name);
+            System.out.println(3);
+        }catch (Exception e){
+            System.out.println(4);
+            return 0;
+        }
+
         return 0;
     }
 }

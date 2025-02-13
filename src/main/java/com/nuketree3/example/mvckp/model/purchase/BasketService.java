@@ -1,7 +1,6 @@
 package com.nuketree3.example.mvckp.model.purchase;
 
 import com.nuketree3.example.mvckp.model.product.Product;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 

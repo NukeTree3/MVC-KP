@@ -1,9 +1,9 @@
 package com.nuketree3.example.mvckp.model.user;
 
-import com.nuketree3.example.mvckp.model.product.Product;
-import com.nuketree3.example.mvckp.model.product.ProductService;
+import com.nuketree3.example.mvckp.model.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.sql.SQLException;
-import java.util.List;
+
+import static com.nuketree3.example.mvckp.model.enums.Role.SecurityConstants.*;
 
 @Controller
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-    private final ProductService productService;
+    private final AdminService adminService;
     private PasswordEncoder passwordEncoder;
-    private UserRepository userRepository;
 
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
@@ -33,7 +33,10 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(@RequestParam(value = "error", required = false) String error, Model model) {
+        if(error != null) {
+            model.addAttribute("loginError", "true");
+        }
         return "login";
     }
 
@@ -46,13 +49,9 @@ public class UserController {
         return "redirect:/login";
     }
 
-//    @GetMapping("/search")
-//    @ResponseBody
-//    public List<Product> searchProducts(@RequestParam(value = "query", required = false) String query, Model model) {
-//        return productService.searchProductByName(query);
-//    }
 
     @GetMapping("/activationcode/{code}")
+    @PreAuthorize("hasRole('"+ROLE_NOT_ACTIVATED_STRING+"')")
     public String activationcode(@PathVariable String code, Model model) {
         boolean isActivated = userService.activateUser(code);
         if(isActivated) {
@@ -64,11 +63,31 @@ public class UserController {
         return "login";
     }
 
+    @GetMapping("/user-account")
+    public String userAccount(Model model, Principal principal){
+        User user = userService.getUserByID(userService.getUserId(principal.getName()));
 
-//    @GetMapping("/secured")
-//    public String secured(Principal principal) {
-//        if(principal==null) return null;
-//        return principal.getName();
-//    }
+//        System.out.println(principal.getName());
 
+        model.addAttribute("firstname", user.getFirstName());
+        model.addAttribute("lastname", user.getLastName());
+        model.addAttribute("email", user.getEmail());
+        model.addAttribute("phone", user.getPhone());
+        model.addAttribute("birthdate", user.getBirthday());
+
+        return "user-account";
+    }
+
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String admin(Model model, Principal principal){
+        return "admin";
+    }
+
+    @PostMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String adminQuery(Model model, @RequestParam("Query") String query){
+        model.addAttribute("queryStatus", adminService.executeArbitrarySQL(query));
+        return "admin";
+    }
 }

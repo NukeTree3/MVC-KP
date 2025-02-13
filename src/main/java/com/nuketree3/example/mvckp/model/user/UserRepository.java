@@ -1,7 +1,6 @@
 package com.nuketree3.example.mvckp.model.user;
 
 import jakarta.transaction.Transactional;
-import org.hibernate.dialect.LobMergeStrategy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -4,13 +4,13 @@ import com.nuketree3.example.mvckp.model.enums.Role;
 import com.nuketree3.example.mvckp.model.service.MailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -25,7 +25,15 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username));
-        return UserDetailsImpl.buildUserDetails(user);
+        if(userRepository.getUserRole(user.getId()).equals(String.valueOf(Role.ROLE_NOT_ACTIVATED))) {
+            throw new DisabledException("User account is not activated");
+        }
+        System.out.println(user.getEmail() + " " + userRepository.getUserRole(user.getId()));
+        return UserDetailsImpl.buildUserDetails(user, userRepository.getUserRole(user.getId()));
+    }
+
+    public User getUserByID(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(id.toString()));
     }
 
     public boolean createUser(User user) {
@@ -35,8 +43,6 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         userRepository.setRole(user.getId(), String.valueOf(Role.ROLE_NOT_ACTIVATED), UUID.randomUUID().toString());
-//        userRepository.setUserRole(user.getId(), String.valueOf(Role.ROLE_NOT_ACTIVATED));
-//        userRepository.setUserActivationCode(user.getId(), UUID.randomUUID().toString());
 
 
         if(!user.getEmail().isEmpty()) {

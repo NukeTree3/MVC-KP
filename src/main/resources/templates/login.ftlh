@@ -6,7 +6,7 @@
     </title>
 </head>
 <body>
-HELLO<hr>
+<a href="/">HELLO</a><hr>
 <form action="/login" method="post">
     почта: <input type="email" name="username">
     пароль <input type="password" name="password">
@@ -14,5 +14,8 @@ HELLO<hr>
     <input type="submit" value="Войти">
 </form>
 <a href="/registration"> Регистрация</a>
+<#if loginError??>
+    <p style="color:red;">Invalid username or password. Account may not be activated.</p>
+</#if>
 </body>
 </html>

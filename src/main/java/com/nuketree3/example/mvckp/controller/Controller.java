@@ -1,12 +1,14 @@
 package com.nuketree3.example.mvckp.controller;
 
-import com.nuketree3.example.mvckp.model.product.Product;
+import com.nuketree3.example.mvckp.model.comment.Comment;
+import com.nuketree3.example.mvckp.model.comment.CommentsService;
+import com.nuketree3.example.mvckp.model.images.ImageService;
 import com.nuketree3.example.mvckp.model.product.ProductService;
 import com.nuketree3.example.mvckp.model.purchase.BasketService;
 import com.nuketree3.example.mvckp.model.purchase.PurchaseService;
-import com.nuketree3.example.mvckp.model.service.Service;
 import com.nuketree3.example.mvckp.model.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,67 +17,66 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.sql.SQLException;
-import java.util.Map;
+
+import static com.nuketree3.example.mvckp.model.enums.Role.SecurityConstants.ROLE_USER_STRING;
 
 @org.springframework.stereotype.Controller
 @RequiredArgsConstructor
 public class Controller{
-    private final Service service;
     private final ProductService productService;
     private final BasketService basketService;
     private final PurchaseService purchaseService;
     private final UserService userService;
-
-//    @GetMapping("/")
-//    public String hello(Model model) throws SQLException {
-//        model.addAttribute("products");
-//        return "hello";
-//    }
+    private final CommentsService commentsService;
+    private final ImageService imageService;
 
 
     @GetMapping("/")
     public String products(@RequestParam(value = "query", required = false) String query, Model model) {
         model.addAttribute("products", productService.searchProductByName(query));
+        model.addAttribute("imgService", imageService);
         return "hello";
     }
-
-//    @PostMapping("/")
-//    public String productsWithQuery(@RequestParam(value = "query", required = false) String query, Model model){
-//        model.addAttribute("products", productService.searchProductByName(query));
-//        return "hello";
-//    }
 
     @GetMapping("/product/{id}")
     public String product(Model model, @PathVariable Long id) throws SQLException {
         model.addAttribute("product", productService.getProductById(id));
         model.addAttribute("countProductFromBasket", basketService.getProductCount(productService.getProductById(id)));
+        System.out.println(productService.getCountProductByName(productService.getProductById(id).getName()));
         model.addAttribute("count", productService.getCountProductByName(productService.getProductById(id).getName()));
-        System.out.println("from product "+productService.getProductById(id).hashCode());
+        if(!Double.isNaN(commentsService.getAverageRanting(id))){
+            model.addAttribute("rating", commentsService.getAverageRanting(id));
+        }else{
+            model.addAttribute("rating", "нет оценок");
+        }
+        model.addAttribute("comments", commentsService.getCommentsByProductID(id));
+        model.addAttribute("serviceToComment", userService);
+        model.addAttribute("imgService", imageService);
         return "product-information";
     }
 
     @PostMapping("/product/{id}")
     public String addToCart(@PathVariable Long id, @RequestParam("quantity") int quantity) {
-        System.out.println(id + " " + quantity);
         basketService.addProduct(productService.getProductById(id), quantity);
-        System.out.println("from product post"+productService.getProductById(id).hashCode());
-//        for(Product c: basket.getProducts().keySet()){
-//            System.out.println(c.getName() + " " + basket.getProducts().get(c));
-//        }
+        return "redirect:/product/" + id;
+    }
+
+    @PostMapping("/product/{id}/add-comment")
+    public String addComment(@PathVariable Long id, @RequestParam("commentText") String commentText, Principal principal, @RequestParam("rating") int rating) {
+        commentsService.addComments(new Comment(userService.getUserId(principal.getName()), id, rating, commentText));
         return "redirect:/product/" + id;
     }
 
     @GetMapping("/basket")
+    @PreAuthorize("hasRole('"+ROLE_USER_STRING+"')")
     public String basket(Model model) {
-        for(Product c: basketService.getProducts().keySet()){
-            System.out.println(c.getName() + " " + basketService.getProducts().get(c));
-            System.out.println("from basket"+c.hashCode());
-        }
         model.addAttribute("basket", basketService);
+        model.addAttribute("imgService", imageService);
         return "basket";
     }
 
     @GetMapping("/order")
+    @PreAuthorize("hasRole('"+ROLE_USER_STRING+"')")
     public String orderFromBasket(Model model, Principal principal) {
         if(purchaseService.createOrder(basketService.getProducts(), userService.getUserId(principal.getName()))){
             basketService.removeAll();
@@ -86,17 +87,4 @@ public class Controller{
         }
         return "order";
     }
-
-//    @GetMapping("/{name}")
-//    public String imagesForProductInformation(Model model, @PathVariable String name) throws SQLException {
-//        String imageURL = "/images/" + name;
-//        model.addAttribute("image", imageURL);
-//        return "product-information";
-//    }
-//    @GetMapping("/main_{name}")
-//    public String imagesForMain(Model model, @PathVariable String name) throws SQLException {
-//        String imageURL = "/images/" + name;
-//        model.addAttribute("image", imageURL);
-//        return "hello";
-//    }
 }
