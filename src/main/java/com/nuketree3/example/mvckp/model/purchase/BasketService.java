@@ -37,4 +37,12 @@ public class BasketService {
     public int getProductCount(Product product) {
         return products.getOrDefault(product, 0);
     }
+
+    public int getTotalCost(){
+        int total = 0;
+        for (Product product : products.keySet()){
+            total += products.get(product) * product.getPrice();
+        }
+        return total;
+    }
 }

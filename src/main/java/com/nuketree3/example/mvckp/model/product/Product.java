@@ -14,6 +14,8 @@ public abstract class Product {
     private long id;
     @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
+    private int price;
 
     public abstract HashMap<String, String> getAllAttribute();
 

@@ -1,193 +1,212 @@
-<#--<!DOCTYPE html>-->
-<#--<html lang="en">-->
-<#--<head>-->
-<#--    <title>-->
-<#--        MVC-->
-<#--    </title>-->
-<#--</head>-->
-<#--<body>-->
-<#--<a href="/">HELLO</a>-->
-<#--<a href="/basket"> Корзина</a>-->
-<#--<a href="/user-account"> Аккаунт</a>-->
-<#--<div class="search_area">-->
-<#--    <form action="/" method="GET">-->
-<#--        <input type="text" name="query" id="search_box" value="" autocomplete="off">-->
-<#--        <input type="submit" value="Поиск">-->
-<#--    </form>-->
-<#--    <div id="search_advice_wrapper"></div>-->
-<#--</div>-->
-<#--<hr>-->
-<#--    <#list products as product>-->
-<#--    <div>-->
-<#--        <a href="/product/${product.id}">${product.name}-->
-<#--    </div>-->
-<#--    </#list>-->
-<#--</body>-->
-<#--</html>-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>
-        MVC
-    </title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MVC</title>
     <style>
-
-        ul.nav{
-
-            margin-left: 0px;
-
-            padding-left: 0px;
-
-            list-style: none;
-
-            }
-
-        .nav li {
-
-            float: left;
-
-            }
-
-        ul.nav a {
-
-            display: block;
-
-            width: 5em;
-
-            padding:10px;
-
-            margin: 0 5px;
-
+        /* Общие стили */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             background-color: #f4f4f4;
-
-            border: 1px dashed #333;
-
-            text-decoration: none;
-
             color: #333;
+        }
 
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: #fff;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        header nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header .logo a {
+            display: block;
+        }
+
+        header .logo img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        header ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        header ul li {
+            margin-left: 20px;
+        }
+
+        header ul li:first-child {
+            margin-left: 0;
+        }
+
+        header a {
+            text-decoration: none;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        header a:hover {
+            color: #007bff;
+        }
+
+        /* Search Area */
+        .search_area {
             text-align: center;
+        }
 
-            }
+        .search_area input[type="text"] {
+            width: 250px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
 
-        ul.nav a:hover{
+        .search_area input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
 
+        .search_area input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+            background-color: #fff;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .product-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .product-card a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .product-card a:hover {
+            color: #007bff;
+        }
+
+        /* Footer */
+        footer {
             background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 30px;
+        }
 
-            color: #f4f4f4;
+        footer .separator {
+            border-bottom: 1px solid #555;
+            margin: 10px 0;
+        }
 
-            }
+        footer .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-        </style>
+        footer .copyright {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
+        footer .copyright img {
+            margin-right: 5px;
+            max-width: 30px;
+            height: auto;
+        }
 
+    </style>
 </head>
 <body>
+
 <header>
-    <ul style="display: flex; align-items: center; justify-content: space-between; list-style: none; padding: 0; margin: 0;">
-        <img src="" alt="[]">
-        <li style="flex-grow: 1; text-align: center;">
-            <div class="search_area">
-                <form action="/" method="GET">
-                    <input type="text" name="query" id="search_box" value="" autocomplete="off" style="width: 200px; padding: 5px;">
-                    <input type="submit" value="Поиск" style="padding: 5px;">
-                </form>
-                <div id="search_advice_wrapper"></div>
+    <div class="container">
+        <nav>
+            <div class="logo">
+                <a href="/">
+                    <img src="/images/logo.jpg" alt="Logo">
+                </a>
             </div>
-        </li>
-        <li style="display: flex; align-items: center;">
-            <a href="/basket" style="margin-right: 10px;">Корзина</a>
-            <a href="/user-account">Аккаунт</a>
-        </li>
-    </ul>
+            <ul>
+                <li>
+                    <div class="search_area">
+                        <form action="/" method="GET">
+                            <input type="text" name="query" id="search_box" value="" autocomplete="off" placeholder="Поиск">
+                            <input type="submit" value="Поиск">
+                        </form>
+                        <div id="search_advice_wrapper"></div>
+                    </div>
+                </li>
+                <li><a href="/basket">Корзина</a></li>
+                <li><a href="/user-account">Аккаунт</a></li>
+            </ul>
+        </nav>
+    </div>
 </header>
 
-<style>
-    /* Общие стили (можно вынести в отдельный CSS-файл) */
-    header {
-        background-color: #ffffff;
-        padding: 10px;
-    }
-
-    header ul {
-        list-style: none; /* Убираем маркеры списка */
-        padding: 0;        /* Убираем внутренние отступы списка */
-        margin: 0;         /* Убираем внешние отступы списка */
-        display: flex;      /* Включаем flexbox */
-        align-items: center; /* Выравниваем элементы по вертикали */
-        justify-content: space-between; /* Равномерно распределяем элементы по ширине */
-    }
-
-    header li {
-        margin: 0; /* Убираем отступы у элементов списка */
-    }
-
-    /* Стили для поисковой панели */
-    .search_area {
-        text-align: center; /* Центрируем содержимое */
-    }
-
-    .search_area input[type="text"] {
-        width: 200px;      /* Задаем ширину текстовому полю */
-        padding: 5px;      /* Добавляем отступы */
-    }
-
-    .search_area input[type="submit"] {
-        padding: 5px;      /* Добавляем отступы кнопке */
-    }
-
-    /* Стили для ссылок (можно переопределить) */
-    header a {
-        text-decoration: none; /* Убираем подчеркивание ссылок */
-        color: #333;            /* Задаем цвет ссылок */
-        margin-left: 10px;    /* Добавляем отступ слева (между ссылками) */
-    }
-    header a:first-child{
-        margin-left: 0;
-    }
-</style>
-
-
-
-<style>
-    .product-card {
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin: 10px;
-        width: 250px; /* или другую подходящую ширину */
-        text-align: center;
-    }
-
-    .product-image {
-        width: 100%; /* чтобы изображение занимало всю ширину карточки */
-        height: auto; /* чтобы сохранялось соотношение сторон */
-        margin-bottom: 10px;
-    }
-
-    .product-name {
-        font-weight: bold;
-    }
-
-    .product-grid{
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-
-        gap: 10px
-    }
-
-</style>
-<hr>
-<div>
+<main class="container">
     <#if products??>
         <div class="product-grid">
             <#list products as product>
-
                 <div class="product-card">
-                    <img src="${imgService.getPathByProductID(product.id)}" alt="" class="product-image">
                     <a href="/product/${product.id}">
+                        <img src="${imgService.getPathByProductID(product.id)}" alt="${product.name}" class="product-image">
                         <div class="product-name">${product.name}</div>
-                        ${product.price}
+                        ${product.price} ₽
                     </a>
                 </div>
             </#list>
@@ -195,47 +214,17 @@
     <#else>
         <p>Нет доступных товаров.</p>
     </#if>
-</div>
-<footer class="mainDivEnd">
+</main>
+
+<footer>
     <div class="separator"></div>
     <div class="footer-content">
         <p>Почта помощи: support@s.ru</p>
         <div class="copyright">
-
             <p>&copy; 2025 NukeTree3</p>
         </div>
     </div>
 </footer>
-
-<style>
-    /* Общие стили (можно вынести в отдельный CSS-файл) */
-    .mainDivEnd {
-        color: black;
-        background-color: #ffffff; /* Добавим темный фон для видимости белого текста */
-        padding: 10px;          /* Добавим отступы */
-        text-align: center;      /* Центрируем контент */
-    }
-
-    .separator {
-        border-bottom: 1px solid #ccc;
-        margin: 10px 0;
-    }
-
-    .footer-content {
-        display: flex;             /* Используем flexbox */
-        flex-direction: column;    /* Располагаем элементы вертикально */
-        align-items: center;        /* Центрируем элементы по горизонтали */
-    }
-
-    .copyright {
-        display: flex;             /* Используем flexbox */
-        align-items: center;        /* Центрируем элементы по вертикали */
-    }
-
-    .copyright img {
-        margin-right: 5px;         /* Добавим отступ справа от логотипа */
-    }
-</style>
 
 </body>
 </html>

@@ -47,7 +47,7 @@ public class Controller{
         if(!Double.isNaN(commentsService.getAverageRanting(id))){
             model.addAttribute("rating", commentsService.getAverageRanting(id));
         }else{
-            model.addAttribute("rating", "нет оценок");
+            model.addAttribute("rating", 0);
         }
         model.addAttribute("comments", commentsService.getCommentsByProductID(id));
         model.addAttribute("serviceToComment", userService);
@@ -72,6 +72,7 @@ public class Controller{
     public String basket(Model model) {
         model.addAttribute("basket", basketService);
         model.addAttribute("imgService", imageService);
+        model.addAttribute("totalCost", basketService.getTotalCost());
         return "basket";
     }
 
@@ -84,6 +85,7 @@ public class Controller{
         }
         else{
             model.addAttribute("status", "failed");
+            model.addAttribute("error", "error");
         }
         return "order";
     }

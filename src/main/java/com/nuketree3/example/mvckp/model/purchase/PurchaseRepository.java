@@ -16,6 +16,6 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long>{
     @Query(value = "UPDATE storage SET count = count - :count WHERE product_name = :productName", nativeQuery = true)
     void changeCountProductFromStorage(@Param("count") int count, @Param("productName") String productName);
 
-    @Query(value = "SELECT count FROM storage WHERE product_name = ':name'", nativeQuery = true)
+    @Query(value = "SELECT count FROM storage WHERE product_name = :name", nativeQuery = true)
     int getCountOfProductFromStorage(@Param("name") String name);
 }

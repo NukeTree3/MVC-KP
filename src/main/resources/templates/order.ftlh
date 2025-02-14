@@ -1,21 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>
-        MVC
-    </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление заказа</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center; /* Центрируем содержимое */
+        }
+
+        header {
+            background-color: #fff;
+            padding: 10px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        header ul {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        header a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        header .logo_images {
+            width: 75px;
+            height: auto;
+        }
+
+        header .search_area {
+            text-align: center;
+        }
+
+        header .search_area input[type="text"] {
+            width: 200px;
+            padding: 5px;
+        }
+
+        header .search_area input[type="submit"] {
+            padding: 5px;
+        }
+
+        .status-message {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #28a745; /* Зеленый цвет для успешного статуса */
+        }
+
+        .search_area input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-to-home {
+            display: inline-block;
+            background-color: #007bff;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-to-home:hover {
+            background-color: #0056b3;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<a href="/">HELLO</a>
-<a href="/basket"> Корзина</a>
-<div class="search_area">
-    <form action="/order" method="GET">
-        <input type="text" name="query" id="search_box" value="" autocomplete="off">
-        <input type="submit" value="Поиск">
-    </form>
-    <div id="search_advice_wrapper"></div>
+
+<div class="container">
+    <header>
+        <ul>
+            <li><a href="/"><img src="/images/logo.jpg" alt="Logo" class="logo_images"></a></li>
+            <li>
+                <div class="search_area">
+                    <form action="/" method="GET">
+                        <input type="text" name="query" id="search_box" value="" autocomplete="off">
+                        <input type="submit" value="Поиск">
+                    </form>
+                </div>
+            </li>
+            <li>
+                <a href="/basket">Корзина</a>
+                <a href="/user-account">Аккаунт</a>
+            </li>
+        </ul>
+    </header>
+    <#if error??>
+        <p class="error-message">${status}</p>
+        <#else>
+            <p class="status-message">${status}</p>
+    </#if>
+
+
+    <a href="/" class="back-to-home">Вернуться на главную</a>
 </div>
-<hr>
-${status}
+
 </body>
 </html>
