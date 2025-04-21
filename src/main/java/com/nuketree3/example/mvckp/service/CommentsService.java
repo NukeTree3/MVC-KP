@@ -1,5 +1,7 @@
-package com.nuketree3.example.mvckp.model.comment;
+package com.nuketree3.example.mvckp.service;
 
+import com.nuketree3.example.mvckp.model.comment.Comment;
+import com.nuketree3.example.mvckp.repositories.CommentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

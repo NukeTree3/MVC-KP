@@ -1,4 +1,4 @@
-package com.nuketree3.example.mvckp.model.purchase;
+package com.nuketree3.example.mvckp.service;
 
 import com.nuketree3.example.mvckp.model.product.Product;
 import lombok.Data;

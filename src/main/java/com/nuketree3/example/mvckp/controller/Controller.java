@@ -1,12 +1,12 @@
 package com.nuketree3.example.mvckp.controller;
 
 import com.nuketree3.example.mvckp.model.comment.Comment;
-import com.nuketree3.example.mvckp.model.comment.CommentsService;
-import com.nuketree3.example.mvckp.model.images.ImageService;
-import com.nuketree3.example.mvckp.model.product.ProductService;
-import com.nuketree3.example.mvckp.model.purchase.BasketService;
-import com.nuketree3.example.mvckp.model.purchase.PurchaseService;
-import com.nuketree3.example.mvckp.model.user.UserService;
+import com.nuketree3.example.mvckp.service.CommentsService;
+import com.nuketree3.example.mvckp.service.ImageService;
+import com.nuketree3.example.mvckp.service.ProductService;
+import com.nuketree3.example.mvckp.service.BasketService;
+import com.nuketree3.example.mvckp.service.PurchaseService;
+import com.nuketree3.example.mvckp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.security.Principal;
 import java.sql.SQLException;
 
-import static com.nuketree3.example.mvckp.model.enums.Role.SecurityConstants.ROLE_USER_STRING;
+import static com.nuketree3.example.mvckp.enums.Role.SecurityConstants.ROLE_USER_STRING;
 
 @org.springframework.stereotype.Controller
 @RequiredArgsConstructor

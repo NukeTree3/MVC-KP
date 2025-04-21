@@ -1,6 +1,8 @@
-package com.nuketree3.example.mvckp.model.user;
+package com.nuketree3.example.mvckp.controller;
 
-import com.nuketree3.example.mvckp.model.admin.AdminService;
+import com.nuketree3.example.mvckp.service.AdminService;
+import com.nuketree3.example.mvckp.model.user.User;
+import com.nuketree3.example.mvckp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.sql.SQLException;
 
-import static com.nuketree3.example.mvckp.model.enums.Role.SecurityConstants.*;
+import static com.nuketree3.example.mvckp.enums.Role.SecurityConstants.ROLE_NOT_ACTIVATED_STRING;
 
 @Controller
 @RequiredArgsConstructor
@@ -52,7 +54,8 @@ public class UserController {
 
     @GetMapping("/activationcode/{code}")
     @PreAuthorize("hasRole('"+ROLE_NOT_ACTIVATED_STRING+"')")
-    public String activationcode(@PathVariable String code, Model model) {
+    public String activationCode(@PathVariable String code, Model model) {
+        System.out.println("пользователь перешел");
         boolean isActivated = userService.activateUser(code);
         if(isActivated) {
             model.addAttribute("message", "Activated" );

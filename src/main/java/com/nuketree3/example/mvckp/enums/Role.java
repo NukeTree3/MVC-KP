@@ -1,4 +1,4 @@
-package com.nuketree3.example.mvckp.model.enums;
+package com.nuketree3.example.mvckp.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 public enum Role implements GrantedAuthority {

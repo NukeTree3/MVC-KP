@@ -1,5 +1,6 @@
-package com.nuketree3.example.mvckp.model.purchase;
+package com.nuketree3.example.mvckp.repositories;
 
+import com.nuketree3.example.mvckp.model.purchase.Purchase;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

@@ -1,5 +1,6 @@
-package com.nuketree3.example.mvckp.model.product;
+package com.nuketree3.example.mvckp.repositories;
 
+import com.nuketree3.example.mvckp.model.product.Laptop;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

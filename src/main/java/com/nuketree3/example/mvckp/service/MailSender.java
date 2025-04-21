@@ -1,4 +1,4 @@
-package com.nuketree3.example.mvckp.model.service;
+package com.nuketree3.example.mvckp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

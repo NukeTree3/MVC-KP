@@ -1,6 +1,7 @@
-package com.nuketree3.example.mvckp.model.user;
+package com.nuketree3.example.mvckp.userdetails;
 
-import com.nuketree3.example.mvckp.model.enums.Role;
+import com.nuketree3.example.mvckp.enums.Role;
+import com.nuketree3.example.mvckp.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,18 +26,18 @@ public class UserDetailsImpl implements UserDetails {
     private String phone;
     private String role;
 
-    public static UserDetails buildUserDetails(User user, String role) {
-        return new UserDetailsImpl(
-                user.getId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getPassword(),
-                user.getBirthday(),
-                user.getPhone(),
-                role
-        );
-    }
+        public static UserDetails buildUserDetails(User user, String role) {
+            return new UserDetailsImpl(
+                    user.getId(),
+                    user.getFirstName(),
+                    user.getLastName(),
+                    user.getEmail(),
+                    user.getPassword(),
+                    user.getBirthday(),
+                    user.getPhone(),
+                    role
+            );
+        }
 
 
     @Override

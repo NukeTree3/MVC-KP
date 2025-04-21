@@ -1,6 +1,8 @@
-package com.nuketree3.example.mvckp.model.purchase;
+package com.nuketree3.example.mvckp.service;
 
 import com.nuketree3.example.mvckp.model.product.Product;
+import com.nuketree3.example.mvckp.model.purchase.Purchase;
+import com.nuketree3.example.mvckp.repositories.PurchaseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

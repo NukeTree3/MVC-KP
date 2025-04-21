@@ -1,5 +1,8 @@
-package com.nuketree3.example.mvckp.model.product;
+package com.nuketree3.example.mvckp.service;
 
+import com.nuketree3.example.mvckp.repositories.LaptopRepository;
+import com.nuketree3.example.mvckp.repositories.PersonalComputerRepository;
+import com.nuketree3.example.mvckp.model.product.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

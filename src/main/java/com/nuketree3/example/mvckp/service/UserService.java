@@ -1,7 +1,9 @@
-package com.nuketree3.example.mvckp.model.user;
+package com.nuketree3.example.mvckp.service;
 
-import com.nuketree3.example.mvckp.model.enums.Role;
-import com.nuketree3.example.mvckp.model.service.MailSender;
+import com.nuketree3.example.mvckp.enums.Role;
+import com.nuketree3.example.mvckp.model.user.User;
+import com.nuketree3.example.mvckp.userdetails.UserDetailsImpl;
+import com.nuketree3.example.mvckp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.DisabledException;
