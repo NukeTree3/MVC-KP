@@ -47,7 +47,7 @@
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            box-sizing: border-box; /* Чтобы padding не увеличивал ширину */
+            box-sizing: border-box;
             font-size: 16px;
         }
 
@@ -60,7 +60,7 @@
             font-size: 1.1em;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            width: 100%; /* Занимает всю ширину контейнера */
+            width: 100%;
         }
 
         input[type="submit"]:hover {

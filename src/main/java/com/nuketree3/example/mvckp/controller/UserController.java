@@ -55,7 +55,6 @@ public class UserController {
     @GetMapping("/activationcode/{code}")
     @PreAuthorize("hasRole('"+ROLE_NOT_ACTIVATED_STRING+"')")
     public String activationCode(@PathVariable String code, Model model) {
-        System.out.println("пользователь перешел");
         boolean isActivated = userService.activateUser(code);
         if(isActivated) {
             model.addAttribute("message", "Activated" );
@@ -69,9 +68,6 @@ public class UserController {
     @GetMapping("/user-account")
     public String userAccount(Model model, Principal principal){
         User user = userService.getUserByID(userService.getUserId(principal.getName()));
-
-//        System.out.println(principal.getName());
-
         model.addAttribute("firstname", user.getFirstName());
         model.addAttribute("lastname", user.getLastName());
         model.addAttribute("email", user.getEmail());

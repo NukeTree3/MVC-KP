@@ -20,8 +20,8 @@ public class CommentsService {
         return commentRepository.findAll();
     }
 
-    public void deleteComment(Comment comment) {
-        commentRepository.delete(comment);
+    public void deleteComment(Long commentId, String username) {
+        commentRepository.deleteCommentByCommentIdAndUsername(commentId, username);
     }
 
     public double getAverageRanting(Long productID) {

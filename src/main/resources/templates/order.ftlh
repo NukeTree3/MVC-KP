@@ -19,7 +19,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 30px;
-            text-align: center; /* Центрируем содержимое */
+            text-align: center;
         }
 
         header {
@@ -64,7 +64,7 @@
         .status-message {
             font-size: 1.2em;
             margin-bottom: 20px;
-            color: #28a745; /* Зеленый цвет для успешного статуса */
+            color: #28a745;
         }
 
         .search_area input[type="submit"] {

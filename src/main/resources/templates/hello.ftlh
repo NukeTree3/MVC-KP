@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MVC</title>
     <style>
-        /* Общие стили */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -20,7 +19,6 @@
             padding: 20px;
         }
 
-        /* Header */
         header {
             background-color: #fff;
             padding: 20px 0;
@@ -68,7 +66,6 @@
             color: #007bff;
         }
 
-        /* Search Area */
         .search_area {
             text-align: center;
         }
@@ -95,7 +92,6 @@
             background-color: #0056b3;
         }
 
-        /* Product Grid */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -137,7 +133,6 @@
             color: #007bff;
         }
 
-        /* Footer */
         footer {
             background-color: #333;
             color: #fff;
@@ -204,7 +199,7 @@
             <#list products as product>
                 <div class="product-card">
                     <a href="/product/${product.id}">
-                        <img src="${imgService.getPathByProductID(product.id)}" alt="${product.name}" class="product-image">
+                        <img src="/images/download/${imgService.getPathByProductID(product.id)}" alt="${product.name}" class="product-image">
                         <div class="product-name">${product.name}</div>
                         ${product.price} ₽
                     </a>

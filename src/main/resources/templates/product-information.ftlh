@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Страница товара - ${product.name}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -35,7 +37,7 @@
         }
 
         .product-image img {
-            max-width: 100%;
+            max-width: 60%;
             height: auto;
             border-radius: 8px;
         }
@@ -126,7 +128,6 @@
             color: #fff;
         }
 
-        /* Медиа-запрос для адаптации под мобильные устройства */
         @media (max-width: 768px) {
             .container {
                 width: 95%;
@@ -137,9 +138,10 @@
             }
 
             .product-image {
-                text-align: center; /*Центрируем картинку на маленьких экранах */
+                text-align: center;
             }
         }
+
         .quantity-container {
             display: flex;
             align-items: center;
@@ -224,7 +226,8 @@
             <li style="flex-grow: 1; text-align: center;">
                 <div class="search_area">
                     <form action="/" method="GET">
-                        <input type="text" name="query" id="search_box" value="" autocomplete="off" style="width: 200px; padding: 5px;">
+                        <input type="text" name="query" id="search_box" value="" autocomplete="off"
+                               style="width: 200px; padding: 5px;">
                         <input type="submit" value="Поиск" style="padding: 5px;">
                     </form>
                     <div id="search_advice_wrapper"></div>
@@ -240,11 +243,12 @@
     <hr>
     <div class="product-grid">
         <div class="product-image">
-            <img src="${imgService.getPathByProductID(product.id)}" alt="${product.name}" class="product-image">
+            <img src="/images/download/${imgService.getPathByProductID(product.id)}" alt="${product.name}"
+                 class="product-image">
         </div>
         <div class="product-details">
             <h1 class="product-title">${product.name}</h1>
-                <p class="product-price">Цена: ${product.price} ₽</p>
+            <p class="product-price">Цена: ${product.price} ₽</p>
 
             <p class="product-description">
             <ul>
@@ -267,9 +271,14 @@
 
             <form action="/product/${product.id}" method="post">
                 <div class="quantity-container">
-                    <button class="quantity-button" type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
-                    <input type="number" id="quantity" name="quantity" class="quantity-input" value="${countProductFromBasket}" min="0" max="${count}">
-                    <button class="quantity-button" type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                    <button class="quantity-button" type="button"
+                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-
+                    </button>
+                    <input type="number" id="quantity" name="quantity" class="quantity-input"
+                           value="${countProductFromBasket}" min="0" max="${count}">
+                    <button class="quantity-button" type="button"
+                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+
+                    </button>
                 </div>
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <button type="submit" class="add-to-cart-button">
@@ -312,6 +321,14 @@
         <hr>
         <#list comments as comment>
             <div class="review">
+                <#if userID??>
+                    <#if comment.userID == userID>
+                        <form id="deleteCommentForm" action="/product/${product.id}/delete-comment/${comment.id}" method="post">
+                            <input type="hidden" name="_csrf" value="${_csrf.token}">
+                            <button type="submit">удалить</button>
+                        </form>
+                    </#if>
+                </#if>
                 <p class="review-author">${serviceToComment.getUserByID(comment.userID).lastName} ${serviceToComment.getUserByID(comment.userID).firstName}</p>
                 <div class="review-rating">
                     <#assign maxRating = 5>

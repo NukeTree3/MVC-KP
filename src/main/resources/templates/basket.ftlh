@@ -141,17 +141,25 @@
 
     <div class="cart-items">
         <h2>Товары в корзине:</h2>
-        <#list basket.products?keys as key>
-            <#assign value = basket.getQuantity(key)>
-            <div class="cart-item">
-                <img src="${imgService.getPathByProductID(key.id)}" alt="${key.name}">
-                <div class="cart-item-details">
-                    <h3>${key.name}</h3>
-                    <p>Количество: ${value}</p>
-                    <p>Цена за единицу: ${key.price}</p>
+        <#if basket??>
+            <#list basket?keys as key>
+                <#if basket[key]??>
+                <#assign product = productService.getProductByName(key)>
+                <#assign value = basket[key]>
+                <div class="cart-item">
+                    <img src="/images/download/${imgService.getPathByProductID(product.id)}" alt="${product.name}">
+                    <div class="cart-item-details">
+                        <h3>${product.name}</h3>
+                        <p>Количество: ${value}</p>
+                        <p>Цена за единицу: ${product.price}</p>
+                    </div>
                 </div>
-            </div>
-        </#list>
+                </#if>
+            </#list>
+        <#else>
+            Корзина пуста.
+        </#if>
+
     </div>
     <p>Итоговая стоимость: ${totalCost}</p>
     <a href="/order" class="order-button">Заказать</a>

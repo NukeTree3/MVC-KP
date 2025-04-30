@@ -30,7 +30,6 @@ public class AdminService {
             catch (DataAccessException e) {
                 output.append("Ошибка доступа к данным: ").append(e.getMessage());
             }
-            System.out.println(output.toString());
             return output.toString();
 
         } catch (Exception e) {

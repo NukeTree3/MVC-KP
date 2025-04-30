@@ -43,7 +43,7 @@
             border-radius: 5px;
             box-sizing: border-box;
             font-size: 16px;
-            resize: vertical; /* Разрешить вертикальное изменение размера */
+            resize: vertical;
         }
 
         .query-form button {
@@ -95,11 +95,10 @@
             text-align: center;
         }
 
-        /* Дополнительные стили (пример) */
         textarea:focus,
         button:focus {
-            outline: none; /* Убрать обводку при фокусе */
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Добавить тень при фокусе */
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
 
     </style>

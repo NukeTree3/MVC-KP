@@ -30,7 +30,6 @@ public class UserService implements UserDetailsService {
         if(userRepository.getUserRole(user.getId()).equals(String.valueOf(Role.ROLE_NOT_ACTIVATED))) {
             throw new DisabledException("User account is not activated");
         }
-        System.out.println(user.getEmail() + " " + userRepository.getUserRole(user.getId()));
         return UserDetailsImpl.buildUserDetails(user, userRepository.getUserRole(user.getId()));
     }
 
