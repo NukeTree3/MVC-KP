@@ -26,18 +26,18 @@ public class UserDetailsImpl implements UserDetails {
     private String phone;
     private String role;
 
-        public static UserDetails buildUserDetails(User user, String role) {
-            return new UserDetailsImpl(
-                    user.getId(),
-                    user.getFirstName(),
-                    user.getLastName(),
-                    user.getEmail(),
-                    user.getPassword(),
-                    user.getBirthday(),
-                    user.getPhone(),
-                    role
-            );
-        }
+    public static UserDetails buildUserDetails(User user, String role) {
+        return new UserDetailsImpl(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getBirthday(),
+                user.getPhone(),
+                role
+        );
+    }
 
 
     @Override
